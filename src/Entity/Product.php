@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProductRepository;
 use Doctrine\DBAL\Types\Types;
@@ -18,9 +19,11 @@ class Product
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[ApiProperty(identifier: false)]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[ApiProperty(identifier: true)]
     private ?string $barCodeNumber = null;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -34,6 +37,8 @@ class Product
 
     #[Vich\UploadableField(mapping: "product_file", fileNameProperty: "thumbnail")]
     private ?File $picture = null;
+
+    private ?string $fileUrl = null;
 
     #[ORM\Column(type: 'datetime')]
     private mixed $uploadedAt;
@@ -124,6 +129,23 @@ class Product
     public function setUploadedAt($uploadedAt): void
     {
         $this->uploadedAt = $uploadedAt;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFileUrl(): ?string
+    {
+        return $this->fileUrl;
+    }
+
+    /**
+     * @param string|null $fileUrl
+     */
+    public function setFileUrl(?string $fileUrl): self
+    {
+        $this->fileUrl = $fileUrl;
+        return $this;
     }
 
 }
