@@ -54,7 +54,6 @@ class Product
 
     #[Vich\UploadableField(mapping: "product_file", fileNameProperty: "thumbnail")]
     private ?File $picture = null;
-
     #[Groups(['product:read'])]
     private ?string $fileUrl = null;
 
@@ -70,7 +69,7 @@ class Product
     #[Groups(['product:read'])]
     private ?int $reparabilityIndex = null;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductAccessories::class,cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductAccessories::class, cascade: ['persist', 'remove'])]
     #[Groups(['product:read'])]
     private Collection $productAccessories;
 
@@ -146,7 +145,7 @@ class Product
     public function setPicture(?File $picture): void
     {
         $this->picture = $picture;
-        if($picture){
+        if ($picture) {
             $this->uploadedAt = new \DateTime('now');
         }
     }
