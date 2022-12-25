@@ -5,6 +5,8 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -52,6 +54,14 @@ class Product
     #[ORM\Column(nullable: true)]
     #[Assert\Range(min: 0, max: 10)]
     private ?int $reparabilityIndex = null;
+
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductAccessories::class)]
+    private Collection $productAccessories;
+
+    public function __construct()
+    {
+        $this->productAccessories = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -178,6 +188,36 @@ class Product
     public function setReparabilityIndex(?int $reparabilityIndex): self
     {
         $this->reparabilityIndex = $reparabilityIndex;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProductAccessories>
+     */
+    public function getProductAccessories(): Collection
+    {
+        return $this->productAccessories;
+    }
+
+    public function addProductAccessory(ProductAccessories $productAccessory): self
+    {
+        if (!$this->productAccessories->contains($productAccessory)) {
+            $this->productAccessories->add($productAccessory);
+            $productAccessory->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductAccessory(ProductAccessories $productAccessory): self
+    {
+        if ($this->productAccessories->removeElement($productAccessory)) {
+            // set the owning side to null (unless already changed)
+            if ($productAccessory->getProduct() === $this) {
+                $productAccessory->setProduct(null);
+            }
+        }
 
         return $this;
     }
