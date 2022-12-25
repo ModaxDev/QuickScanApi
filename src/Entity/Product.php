@@ -56,7 +56,6 @@ class Product
     private ?File $picture = null;
 
     #[Groups(['product:read'])]
-
     private ?string $fileUrl = null;
 
     #[ORM\Column(type: 'datetime')]
