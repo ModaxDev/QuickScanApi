@@ -26,6 +26,7 @@ class ProductFileNormalizer implements ContextAwareNormalizerInterface, Normaliz
     public function normalize($object, string $format = null, array $context = [])
     {
         $object->setFileUrl($this->storageInterface->resolveUri($object, "picture"));
+        $object->setFileUrlCompanyLogo($this->storageInterface->resolveUri($object, "pictureCompany"));
         $context[self::ALREADY_CALLED] = true;
         return $this->normalizer->normalize($object, $format, $context);
     }

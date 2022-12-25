@@ -73,6 +73,20 @@ class Product
     #[Groups(['product:read'])]
     private Collection $productAccessories;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['product:read'])]
+    private ?string $company = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['product:read'])]
+    private ?string $companyLogo = null;
+
+    #[Vich\UploadableField(mapping: "product_company_file", fileNameProperty: "companyLogo")]
+    private ?File $pictureCompany = null;
+
+    #[Groups(['product:read'])]
+    private ?string $fileUrlCompanyLogo = null;
+
     public function __construct()
     {
         $this->productAccessories = new ArrayCollection();
@@ -235,6 +249,65 @@ class Product
         }
 
         return $this;
+    }
+
+    public function getCompany(): ?string
+    {
+        return $this->company;
+    }
+
+    public function setCompany(?string $company): self
+    {
+        $this->company = $company;
+
+        return $this;
+    }
+
+    public function getCompanyLogo(): ?string
+    {
+        return $this->companyLogo;
+    }
+
+    public function setCompanyLogo(?string $companyLogo): self
+    {
+        $this->companyLogo = $companyLogo;
+
+        return $this;
+    }
+
+    /**
+     * @return File|null
+     */
+    public function getPictureCompany(): ?File
+    {
+        return $this->pictureCompany;
+    }
+
+    /**
+     * @param File|null $pictureCompany
+     */
+    public function setPictureCompany(?File $pictureCompany): void
+    {
+        $this->pictureCompany = $pictureCompany;
+        if ($pictureCompany) {
+            $this->uploadedAt = new \DateTime('now');
+        }
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFileUrlCompanyLogo(): ?string
+    {
+        return $this->fileUrlCompanyLogo;
+    }
+
+    /**
+     * @param string|null $fileUrlCompanyLogo
+     */
+    public function setFileUrlCompanyLogo(?string $fileUrlCompanyLogo): void
+    {
+        $this->fileUrlCompanyLogo = $fileUrlCompanyLogo;
     }
 
 }

@@ -38,8 +38,11 @@ class ProductCrudController extends AbstractCrudController
             TextEditorField::new('description'),
             ImageField::new('thumbnail')->setBasePath('/files/products')->setUploadDir('public/files/products')->setLabel("Illustration")->hideOnForm(),
             TextareaField::new('picture')->setLabel("Illustration")->setFormType(VichImageType::class)->hideOnIndex(),
-            BooleanField::new('isFixable')->setLabel("Est-il réparable ?"),
-            IntegerField::new('reparabilityIndex')->setLabel("Indice de réparabilité"),
+            TextField::new('company')->setLabel("Nom de l'entreprise"),
+            ImageField::new('companyLogo')->setBasePath('/files/products')->setUploadDir('public/files/products')->setLabel("Logo de l'entreprise")->hideOnForm()->hideOnIndex(),
+            TextareaField::new('pictureCompany')->setLabel("Logo de l'entreprise")->setFormType(VichImageType::class)->hideOnIndex()->hideOnIndex(),
+            BooleanField::new('isFixable')->setLabel("Est-il réparable ?")->hideOnIndex(),
+            IntegerField::new('reparabilityIndex')->setLabel("Indice de réparabilité")->hideOnIndex(),
             CollectionField::new('productAccessories')->setLabel("Accessoires")->useEntryCrudForm(),
         ];
     }
