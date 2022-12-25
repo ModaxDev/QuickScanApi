@@ -5,7 +5,9 @@ namespace App\Controller\Admin;
 use App\Entity\Product;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
@@ -38,6 +40,7 @@ class ProductCrudController extends AbstractCrudController
             TextareaField::new('picture')->setLabel("Illustration")->setFormType(VichImageType::class)->hideOnIndex(),
             BooleanField::new('isFixable')->setLabel("Est-il réparable ?"),
             IntegerField::new('reparabilityIndex')->setLabel("Indice de réparabilité"),
+            CollectionField::new('productAccessories')->setLabel("Accessoires")->useEntryCrudForm(),
         ];
     }
 

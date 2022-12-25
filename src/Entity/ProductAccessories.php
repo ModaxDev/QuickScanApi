@@ -5,8 +5,12 @@ namespace App\Entity;
 use App\Repository\ProductAccessoriesRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
+
 
 #[ORM\Entity(repositoryClass: ProductAccessoriesRepository::class)]
+#[Vich\Uploadable]
 class ProductAccessories
 {
     #[ORM\Id]
@@ -23,11 +27,22 @@ class ProductAccessories
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $illustration = null;
 
+    #[Vich\UploadableField(mapping: "product_accessorie_file", fileNameProperty: "illustration")]
+    private ?File $picture = null;
+
+    private ?string $fileUrl = null;
+
+
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $uploadedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'productAccessories')]
     private ?Product $product = null;
+
+    public function __toString(): string
+    {
+        return $this->name;
+    }
 
     public function getId(): ?int
     {
@@ -92,5 +107,40 @@ class ProductAccessories
         $this->product = $product;
 
         return $this;
+    }
+
+    /**
+     * @return File|null
+     */
+    public function getPicture(): ?File
+    {
+        return $this->picture;
+    }
+
+    /**
+     * @param File|null $picture
+     */
+    public function setPicture(?File $picture): void
+    {
+        $this->picture = $picture;
+        if($picture){
+            $this->uploadedAt = new \DateTime('now');
+        }
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFileUrl(): ?string
+    {
+        return $this->fileUrl;
+    }
+
+    /**
+     * @param string|null $fileUrl
+     */
+    public function setFileUrl(?string $fileUrl): void
+    {
+        $this->fileUrl = $fileUrl;
     }
 }

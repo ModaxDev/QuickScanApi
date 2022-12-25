@@ -55,7 +55,7 @@ class Product
     #[Assert\Range(min: 0, max: 10)]
     private ?int $reparabilityIndex = null;
 
-    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductAccessories::class)]
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductAccessories::class,cascade: ['persist', 'remove'])]
     private Collection $productAccessories;
 
     public function __construct()
