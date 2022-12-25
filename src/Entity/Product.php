@@ -8,6 +8,7 @@ use App\Repository\ProductRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -44,6 +45,13 @@ class Product
 
     #[ORM\Column(type: 'datetime')]
     private mixed $uploadedAt;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $isFixable = null;
+
+    #[ORM\Column(nullable: true)]
+    #[Assert\Range(min: 0, max: 10)]
+    private ?int $reparabilityIndex = null;
 
     public function getId(): ?int
     {
@@ -147,6 +155,30 @@ class Product
     public function setFileUrl(?string $fileUrl): self
     {
         $this->fileUrl = $fileUrl;
+        return $this;
+    }
+
+    public function isIsFixable(): ?bool
+    {
+        return $this->isFixable;
+    }
+
+    public function setIsFixable(?bool $isFixable): self
+    {
+        $this->isFixable = $isFixable;
+
+        return $this;
+    }
+
+    public function getReparabilityIndex(): ?int
+    {
+        return $this->reparabilityIndex;
+    }
+
+    public function setReparabilityIndex(?int $reparabilityIndex): self
+    {
+        $this->reparabilityIndex = $reparabilityIndex;
+
         return $this;
     }
 

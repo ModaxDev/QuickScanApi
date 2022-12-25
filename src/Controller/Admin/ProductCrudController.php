@@ -5,7 +5,10 @@ namespace App\Controller\Admin;
 use App\Entity\Product;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
@@ -32,7 +35,9 @@ class ProductCrudController extends AbstractCrudController
             TextField::new('name'),
             TextEditorField::new('description'),
             ImageField::new('thumbnail')->setBasePath('/files/products')->setUploadDir('public/files/products')->setLabel("Illustration")->hideOnForm(),
-            TextareaField::new('picture')->setLabel("Illustration")->setFormType(VichImageType::class)->hideOnIndex()
+            TextareaField::new('picture')->setLabel("Illustration")->setFormType(VichImageType::class)->hideOnIndex(),
+            BooleanField::new('isFixable')->setLabel("Est-il réparable ?"),
+            IntegerField::new('reparabilityIndex')->setLabel("Indice de réparabilité"),
         ];
     }
 
