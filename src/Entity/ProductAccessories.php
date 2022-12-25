@@ -6,6 +6,7 @@ use App\Repository\ProductAccessoriesRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 
@@ -19,19 +20,22 @@ class ProductAccessories
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['product:read'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['product:read'])]
     private ?string $link = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['product:read'])]
     private ?string $illustration = null;
 
     #[Vich\UploadableField(mapping: "product_accessorie_file", fileNameProperty: "illustration")]
     private ?File $picture = null;
 
+    #[Groups(['product:read'])]
     private ?string $fileUrl = null;
-
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $uploadedAt = null;

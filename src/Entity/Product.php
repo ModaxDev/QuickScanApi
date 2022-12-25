@@ -4,19 +4,27 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Repository\ProductRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    operations: [
+        new Get(normalizationContext: ['groups' => ['product:read']]),
+        new GetCollection(normalizationContext: ['groups' => ['product:collection:read']]),
+    ]
+)]
 #[Vich\Uploadable]
 #[UniqueEntity(fields: ["barCodeNumber"], message: "Ce code barre est déjà utilisé")]
 class Product
@@ -29,19 +37,25 @@ class Product
 
     #[ORM\Column(length: 255)]
     #[ApiProperty(identifier: true)]
+    #[Groups(['product:read', 'product:collection:read'])]
     private ?string $barCodeNumber = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['product:read', 'product:collection:read'])]
     private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['product:read'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['product:read', 'product:collection:read'])]
     private ?string $thumbnail = null;
 
     #[Vich\UploadableField(mapping: "product_file", fileNameProperty: "thumbnail")]
     private ?File $picture = null;
+
+    #[Groups(['product:read'])]
 
     private ?string $fileUrl = null;
 
@@ -49,13 +63,16 @@ class Product
     private mixed $uploadedAt;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['product:read'])]
     private ?bool $isFixable = null;
 
     #[ORM\Column(nullable: true)]
     #[Assert\Range(min: 0, max: 10)]
+    #[Groups(['product:read'])]
     private ?int $reparabilityIndex = null;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductAccessories::class,cascade: ['persist', 'remove'])]
+    #[Groups(['product:read'])]
     private Collection $productAccessories;
 
     public function __construct()
