@@ -44,6 +44,7 @@ class ProductCrudController extends AbstractCrudController
             BooleanField::new('isFixable')->setLabel("Est-il réparable ?")->hideOnIndex(),
             IntegerField::new('reparabilityIndex')->setLabel("Indice de réparabilité")->hideOnIndex(),
             CollectionField::new('productAccessories')->setLabel("Accessoires")->useEntryCrudForm(),
+            CollectionField::new('productVideos')->setLabel("Vidéos")->useEntryCrudForm(),
         ];
     }
 

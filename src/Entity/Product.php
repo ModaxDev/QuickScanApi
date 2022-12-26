@@ -87,9 +87,14 @@ class Product
     #[Groups(['product:read'])]
     private ?string $fileUrlCompanyLogo = null;
 
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductVideo::class, cascade: ['persist', 'remove'])]
+    #[Groups(['product:read'])]
+    private Collection $productVideos;
+
     public function __construct()
     {
         $this->productAccessories = new ArrayCollection();
+        $this->productVideos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -308,6 +313,36 @@ class Product
     public function setFileUrlCompanyLogo(?string $fileUrlCompanyLogo): void
     {
         $this->fileUrlCompanyLogo = $fileUrlCompanyLogo;
+    }
+
+    /**
+     * @return Collection<int, ProductVideo>
+     */
+    public function getProductVideos(): Collection
+    {
+        return $this->productVideos;
+    }
+
+    public function addProductVideo(ProductVideo $productVideo): self
+    {
+        if (!$this->productVideos->contains($productVideo)) {
+            $this->productVideos->add($productVideo);
+            $productVideo->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductVideo(ProductVideo $productVideo): self
+    {
+        if ($this->productVideos->removeElement($productVideo)) {
+            // set the owning side to null (unless already changed)
+            if ($productVideo->getProduct() === $this) {
+                $productVideo->setProduct(null);
+            }
+        }
+
+        return $this;
     }
 
 }
