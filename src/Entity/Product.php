@@ -92,6 +92,7 @@ class Product
     private Collection $productVideos;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductTag::class, cascade: ['persist', 'remove'])]
+    #[Groups(['product:read'])]
     private Collection $productTags;
 
     public function __construct()

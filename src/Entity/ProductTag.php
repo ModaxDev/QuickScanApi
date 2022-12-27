@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ProductTagRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: ProductTagRepository::class)]
 class ProductTag
@@ -14,12 +15,14 @@ class ProductTag
     private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['product:read'])]
     private ?string $name = null;
 
     #[ORM\ManyToOne(inversedBy: 'productTags')]
     private ?Product $product = null;
 
     #[ORM\Column]
+    #[Groups(['product:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     public function __toString(): string
