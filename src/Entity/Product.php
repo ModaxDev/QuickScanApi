@@ -91,10 +91,14 @@ class Product
     #[Groups(['product:read'])]
     private Collection $productVideos;
 
+    #[ORM\OneToMany(mappedBy: 'product', targetEntity: ProductTag::class, cascade: ['persist', 'remove'])]
+    private Collection $productTags;
+
     public function __construct()
     {
         $this->productAccessories = new ArrayCollection();
         $this->productVideos = new ArrayCollection();
+        $this->productTags = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -339,6 +343,36 @@ class Product
             // set the owning side to null (unless already changed)
             if ($productVideo->getProduct() === $this) {
                 $productVideo->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ProductTag>
+     */
+    public function getProductTags(): Collection
+    {
+        return $this->productTags;
+    }
+
+    public function addProductTag(ProductTag $productTag): self
+    {
+        if (!$this->productTags->contains($productTag)) {
+            $this->productTags->add($productTag);
+            $productTag->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProductTag(ProductTag $productTag): self
+    {
+        if ($this->productTags->removeElement($productTag)) {
+            // set the owning side to null (unless already changed)
+            if ($productTag->getProduct() === $this) {
+                $productTag->setProduct(null);
             }
         }
 
