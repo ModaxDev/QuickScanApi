@@ -26,6 +26,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
     ]
 )]
 #[Vich\Uploadable]
+#[ApiFilter(SearchFilter::class, properties: ['name' => 'partial'])]
 #[UniqueEntity(fields: ["barCodeNumber"], message: "Ce code barre est déjà utilisé")]
 class Product
 {
@@ -54,7 +55,7 @@ class Product
 
     #[Vich\UploadableField(mapping: "product_file", fileNameProperty: "thumbnail")]
     private ?File $picture = null;
-    #[Groups(['product:read'])]
+    #[Groups(['product:read','product:collection:read'])]
     private ?string $fileUrl = null;
 
     #[ORM\Column(type: 'datetime')]
