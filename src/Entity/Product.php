@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
@@ -75,7 +77,7 @@ class Product
     private Collection $productAccessories;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['product:read'])]
+    #[Groups(['product:read', 'product:collection:read'])]
     private ?string $company = null;
 
     #[ORM\Column(length: 255, nullable: true)]
