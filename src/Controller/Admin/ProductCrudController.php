@@ -36,6 +36,7 @@ class ProductCrudController extends AbstractCrudController
             TextField::new('barCodeNumber'),
             TextField::new('name'),
             TextEditorField::new('description'),
+            AssociationField::new('type')->setLabel("Type de produit"),
             ImageField::new('thumbnail')->setBasePath('/files/products')->setUploadDir('public/files/products')->setLabel("Illustration")->hideOnForm(),
             TextareaField::new('picture')->setLabel("Illustration")->setFormType(VichImageType::class)->hideOnIndex(),
             TextField::new('company')->setLabel("Nom de l'entreprise"),

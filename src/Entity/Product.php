@@ -98,6 +98,10 @@ class Product
     #[Groups(['product:read'])]
     private Collection $productTags;
 
+    #[ORM\ManyToOne(inversedBy: 'products')]
+    #[Groups(['product:read'])]
+    private ?ProductType $type = null;
+
     public function __construct()
     {
         $this->productAccessories = new ArrayCollection();
@@ -379,6 +383,18 @@ class Product
                 $productTag->setProduct(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getType(): ?ProductType
+    {
+        return $this->type;
+    }
+
+    public function setType(?ProductType $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }
